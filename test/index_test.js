@@ -1,6 +1,6 @@
 const assert = require('chai').assert
 const createRequest = require('../index.js').createRequest
-const URL = 'www.google.com'
+const STATUS = 'CHAINLINK'
 
 describe('createRequest', () => {
   const jobID = '1'
@@ -8,18 +8,21 @@ describe('createRequest', () => {
   context('successful calls', () => {
     const requests = [
       {
-        name: 'id not supplied',
-        testData: { data: { url: URL } },
+        name: "id not supplied",
+        testData: { data: { status: STATUS } },
       },
       {
-        name: 'url',
-        testData: { id: jobID, data: { url: URL } },
+        name: "status",
+        testData: { id: jobID, data: { status: STATUS } },
       },
       {
-        name: 'url, endpoint',
-        testData: { id: jobID, data: { url: URL, endpoint: '/api/submit' } },
+        name: "status, endpoint",
+        testData: {
+          id: jobID,
+          data: { status: STATUS, endpoint: "statuses/update" },
+        },
       },
-    ]
+    ];
 
     requests.forEach((req) => {
       it(`${req.name}`, (done) => {

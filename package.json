@@ -12,7 +12,8 @@
     "@chainlink/external-adapter": "^0.2.3",
     "reddit": "^1.2.0",
     "snoostorm": "^1.5.0",
-    "snoowrap": "^1.21.0"
+    "snoowrap": "^1.21.0",
+    "twitter": "^1.7.1"
   },
   "devDependencies": {
     "body-parser": "^1.19.0",

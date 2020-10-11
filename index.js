@@ -1,5 +1,5 @@
 const { Requester, Validator } = require('@chainlink/external-adapter')
-const Reddit = require('reddit')
+const Twitter = require('twitter')
 
 // Define custom error scenarios for the API.
 // Return true for the adapter to retry.
@@ -8,52 +8,42 @@ const customError = (data) => {
   return false
 }
 
-const reddit = new Reddit({
-  username: process.env.REDDIT_USER,
-  password: process.env.REDDIT_PASSWORD,
-  appId: process.env.REDDIT_API_KEY,
-  appSecret: process.env.REDDIT_API_SECRET,
-  userAgent: 'tweether',
-})
+var twitter = new Twitter({
+  consumer_key: process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+  access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+});
 
-// Reddit API documentation for endpoints
-// https://www.reddit.com/dev/api/
-// Reddit NPM package documentation
-// https://www.npmjs.com/package/reddit
+// Twitter API documentation for endpoints
+// https://developer.twitter.com/en/portal/projects-and-apps
+// Twitter NPM package documentation
+// https://www.npmjs.com/package/twitter
 const customParams = {
-  sr: false,
-  kind: false,
-  resubmit: false,
-  title: false,
-  text: false,
   endpoint: false,
-  url: false,
+  status: false,
+  getorpost: false
 }
+
+// twitter.get('favorites/list', function(error, tweets, response) {
+//   if(error) throw error;
+//   console.log(tweets);  // The favorites.
+//   //console.log(response);  // Raw response object.
+// });
 
 const createRequest = (input, callback) => {
   // The Validator helps you validate the Chainlink request data
   const validator = new Validator(callback, input, customParams)
   const jobRunID = validator.validated.id
-  const endpoint = validator.validated.data.endpoint || '/api/submit'
-  const sr = validator.validated.data.sr || 'testingground4bots'
-  const kind = validator.validated.data.kind || 'self'
-  const resubmit = validator.validated.data.resubmit || 'false'
-  const title = validator.validated.data.title || 'Test Title Here!'
-  const text = validator.validated.data.text || 'Test Text Here!'
-  const url = validator.validated.data.url || 'https://twitter.com/TweethTweet'
-  reddit
-    .post(endpoint, {
-      sr: sr,
-      kind: kind,
-      resubmit: resubmit,
-      title: title,
-      text: text,
-      url: url,
-    })
-    .then((response) => {
-      response.json.data.result = response.json.data.id
-      response.json.status = 200
-      callback(response.json.status, Requester.success(jobRunID, response.json))
+  const endpoint = validator.validated.data.endpoint || "statuses/update";
+  const getorpost = validator.validated.data.getorpost || "post";
+  const status = validator.validated.data.status || "We love #Chainlink";
+  twitter.post(endpoint, { status: status}).then((response) => {
+    console.log(response)
+    response.data = {}
+      response.data.result = response.id
+      response.status = 200
+      callback(response.status, Requester.success(jobRunID, response))
     })
     .catch((error) => {
       callback(500, Requester.errored(jobRunID, error))

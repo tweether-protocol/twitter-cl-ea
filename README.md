@@ -1,24 +1,26 @@
-[![Actions Status](https://github.com/tweether-protocol/reddit-cl-ea/workflows/yarn/badge.svg)](https://github.com/tweether-protocol/reddit-cl-ea/actions?query=workflow%3Ayarn)
-[![Percentage of issues still open](http://isitmaintained.com/badge/open/tweether-protocol/reddit-cl-ea.svg)](http://isitmaintained.com/project/tweether-protocol/reddit-cl-ea "Percentage of issues still open")
+<!-- [![Actions Status](https://github.com/tweether-protocol/twitter-cl-ea/workflows/yarn/badge.svg)](https://github.com/tweether-protocol/reddit-cl-ea/actions?query=workflow%3Ayarn) -->
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/tweether-protocol/twitter-cl-ea.svg)](http://isitmaintained.com/project/tweether-protocol/twitter-cl-ea "Percentage of issues still open")
 
-# Reddit Chainlink External Adapter
+# Twitter Chainlink External Adapter
 
-The template allows a user to interact with the Reddit API. This uses the [Reddit API](https://www.reddit.com/dev/api/)
+*NOTE* Their are a number of TODOs to make this repo more robust. Its very elementary at the moment, only allowing you to tweet from you smart contract.
+
+The template allows a user to interact with the Twitter API. This uses the [Twitter API](https://developer.twitter.com/en/portal/projects-and-apps)
 
 ## Quickstart
 
-After you [create an app in reddit](https://www.reddit.com/prefs/apps) you'll need 4 environment variables:
+After you [create an app in Twitter](https://developer.twitter.com/en/portal/projects-and-apps) you'll need 4 environment variables and to get approved. Approval will take a few days. Here are the environment variables.
 ```
-REDDIT_API_KEY
-REDDIT_API_SECRET
-REDDIT_PASSWORD
-REDDIT_USER
+TWITTER_CONSUMER_KEY
+TWITTER_CONSUMER_SECRET
+TWITTER_ACCESS_TOKEN_KEY
+TWITTER_ACCESS_TOKEN_SECRET
 ```
-You'll get the top two in your reddit App, and the bottom two are just your reddit username and password. Then clone the repo:
+You'll get the top two in your Twitter App, and the bottom two you'll have to generate a token in your [projects page](https://developer.twitter.com/en/portal/projects-and-apps):
 
 ```bash
-git clone https://github.com/tweether-protocol/reddit-cl-ea
-cd reddit-cl-ea
+git clone https://github.com/tweether-protocol/twitter-cl-ea
+cd twitter-cl-ea
 yarn
 yarn start
 ```
@@ -27,36 +29,29 @@ See [Install Locally](#install-locally) for a quickstart
 
 ## Input Params
 
-- `sr`: The subreddit name
-- `kind`: One of (link, self, image, video, videogif)
-- `resubmit`: Boolean to resubmit if you've already submit
-- `title`: Title
-- `text`: Text
-- `endpoint`: The endpoint
-- `url`: The URL if you pick link
+- `endpoint`: The Twitter API endpoint, this defaults to updating your status. 
+-  `status`: The status you want to set
 
-They default to the testing grounds, so you can leave them blank for testing. You can find more inputs at the [reddit documentation](https://www.reddit.com/dev/api/)
+Right now you can only post your status. Please make a PR to add functionality :)
 
 ## Sample cURL
 
 ```bash
-curl -X POST -H "content-type:application/json" "http://localhost:8080/" --data '{ "id": 0, "data": {"title":"HELLO" }}'
+curl -X POST -H "content-type:application/json" "http://localhost:8080/" --data '{ "id": 0, "data": {"status":"Chainlink is amazing"}}'
 ```
 
 ## Output
 
 ```json
-{ jobRunID: 0,
-  data:
-   { url:
-      'https://www.reddit.com/r/testingground4bots/comments/j7obun/test_title_here/',
-     drafts_count: 0,
-     id: 'j7obun',
-     name: 't3_j7obun',
-     result: 'j7obun' },
-  result: 'j7obun',
-  statusCode: 200 }
+{
+  jobRunID: 0,
+  data: { result: 1315380402618499000 },
+  result: 1315380402618499000,
+  statusCode: 200
+}
 ```
+
+This is the ID of your tweet.
 
 ## Install Locally
 
@@ -85,7 +80,7 @@ yarn start
 ## Call the external adapter/API server
 
 ```bash
-curl -X POST -H "content-type:application/json" "http://localhost:8080/" --data '{ "id": 0, "data": {"title":"HELLO" }}'
+curl -X POST -H "content-type:application/json" "http://localhost:8080/" --data '{ "id": 0, "data": {"status":"Chainlink is amazing"}}'
 ```
 
 ## Docker
