@@ -1,0 +1,14 @@
+  
+name: Twitter Chainlink EA
+description: Update Twitter Status
+node_identifier: twitter-cl-ea
+platforms:
+  - Docker
+  - AWS Lambda
+  - GCP Functions
+data_sources:
+  - name: Twitter
+    url: https://twitter.com/
+parameters:
+  - endpoint
+  - status
