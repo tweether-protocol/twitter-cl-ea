@@ -1,6 +1,8 @@
 const assert = require('chai').assert
 const createRequest = require('../index.js').createRequest
-const STATUS = 'CHAINLINK'
+const STATUS = '#CHAINLINK IS GREAT'
+const STATUS2 = 'We are testing this bot'
+const STATUS3 = 'Wow Alex and Patrick are really cool'
 
 describe('createRequest', () => {
   const jobID = '1'
@@ -13,13 +15,13 @@ describe('createRequest', () => {
       },
       {
         name: "status",
-        testData: { id: jobID, data: { status: STATUS } },
+        testData: { id: jobID, data: { status: STATUS2 } },
       },
       {
         name: "status, endpoint",
         testData: {
           id: jobID,
-          data: { status: STATUS, endpoint: "statuses/update" },
+          data: { status: STATUS3, endpoint: "statuses/update" },
         },
       },
     ];
